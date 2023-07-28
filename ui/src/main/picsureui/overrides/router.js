@@ -1,12 +1,21 @@
-define(["backbone", "handlebars", "studyAccess/studyAccess", "text!common/layoutTemplate.hbs", "picSure/settings", "filter/filterList",
+define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings", "filter/filterList",
         "openPicsure/outputPanel", "picSure/queryBuilder", "text!openPicsure/searchHelpTooltipOpen.hbs", "overrides/outputPanel",
         "search-interface/filter-list-view", "search-interface/search-view", "search-interface/tool-suite-view",
         "search-interface/query-results-view", "api-interface/apiPanelView", "search-interface/filter-model",
-        "search-interface/tag-filter-model", "openPicsure/tool-suite-view"],
-    function(BB, HBS, studyAccess, layoutTemplate, settings, filterList,
+        "search-interface/tag-filter-model", "openPicsure/tool-suite-view", "landing/landing"],
+    function(BB, HBS, studyAccess, settings, filterList,
              outputPanel, queryBuilder, searchHelpTooltipTemplate, output,
              FilterListView, SearchView, ToolSuiteView, queryResultsView,
-             ApiPanelView, filterModel, tagFilterModel, openToolSuiteView) {
+             ApiPanelView, filterModel, tagFilterModel, openToolSuiteView, landingView) {
+
+        let displayLandingPage = function() {
+            $(".header-btn.active").removeClass('active');
+            $('#main-content').empty();
+
+            var landing = new landingView();
+            $('#main-content').append(landing.$el);
+            landingView.render();
+        };
 
         let displayOpenAccess = function() {
             sessionStorage.setItem("isOpenAccess", true);
@@ -61,11 +70,13 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "text!common/layout
                  * Ex:
                  * "picsureui/queryBuilder2" : function() { renderQueryBuilder2(); }
                  */
-                "picsureui/openAccess" : displayOpenAccess,
+                "picsureui/openAccess" : function () {
+                    displayOpenAccess.call(this);
+                },
                 "picsureui/queryBuilder(/)" : displayOpenAccess,
                 "picsureui/api" : displayAPI,
             },
-            defaultAction: displayOpenAccess
+            defaultAction: displayLandingPage,
         };
     }
 );
