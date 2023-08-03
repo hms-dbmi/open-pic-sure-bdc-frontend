@@ -11,10 +11,11 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
         let displayLandingPage = function() {
             $(".header-btn.active").removeClass('active');
             $('#main-content').empty();
+            let totalVars = filterModel.get("totalVariables");
 
-            var landing = new landingView();
+            var landing = new landingView({totalVars: totalVars});
             $('#main-content').append(landing.$el);
-            landingView.render();
+            landing.render();
         };
 
         let displayOpenAccess = function() {
