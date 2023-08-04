@@ -1,7 +1,7 @@
 define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs',
-        'common/session'],
+        'common/session', '../../picsureui/common/cookieManager'],
     function (settings, $, HBS, loginTemplate,
-              session) {
+              session, cookieManager) {
         return {
             doLogin: function () {
                 // 1. Check if the user is already logged in
@@ -9,8 +9,12 @@ define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs'
                     // The user is already logged in, so we can just redirect them to the landing page.
                     console.log("Session token found, redirecting to landing page.");
                 } else {
-                    // 2. If not, check if the user has an existing cookie that contains a valid user ID.
-                    const uuid = $.cookie('OPEN_ACCESS_UUID');
+                    let cookiesEnabled = cookieManager.areCookiesEnabled();
+                    let uuid;
+                    if (!cookiesEnabled) {
+                        // try to get the UUID from the Cookie
+                        uuid = cookieManager.readCookie('OPEN_ACCESS_UUID');
+                    }
 
                     // userId is essentially optional, so we can just continue with the login process if it's not set.
                     $.ajax({
@@ -22,9 +26,9 @@ define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs'
                         contentType: 'application/json',
                         success: function (data) {
                             // we need to set the UUID cookie here, because the backend will not do it for us.
-                            $.cookie('OPEN_ACCESS_UUID', data.UUID, {expires: 365, path: '/'});
-                            session.sessionInit(data);
+                            cookieManager.createCookie('OPEN_ACCESS_UUID', data.UUID, 365);
 
+                            session.sessionInit(data);
                         },
                         error: function (data) {
                             // handle error
