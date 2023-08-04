@@ -1,7 +1,7 @@
 define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs',
-        'common/session', '../../picsureui/common/cookieManager'],
+        'common/session'],
     function (settings, $, HBS, loginTemplate,
-              session, cookieManager) {
+              session) {
         return {
             doLogin: function () {
                 // 1. Check if the user is already logged in
@@ -9,12 +9,7 @@ define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs'
                     // The user is already logged in, so we can just redirect them to the landing page.
                     console.log("Session token found, redirecting to landing page.");
                 } else {
-                    let cookiesEnabled = cookieManager.areCookiesEnabled();
-                    let uuid;
-                    if (!cookiesEnabled) {
-                        // try to get the UUID from the Cookie
-                        uuid = cookieManager.readCookie('OPEN_ACCESS_UUID');
-                    }
+                    let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
 
                     // userId is essentially optional, so we can just continue with the login process if it's not set.
                     $.ajax({
@@ -25,8 +20,10 @@ define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs'
                         }),
                         contentType: 'application/json',
                         success: function (data) {
-                            // we need to set the UUID cookie here, because the backend will not do it for us.
-                            cookieManager.createCookie('OPEN_ACCESS_UUID', data.UUID, 365);
+                            if (data.UUID) {
+                                // we need to set the UUID cookie here, because the backend will not do it for us.
+                                localStorage.setItem('OPEN_ACCESS_UUID', JSON.stringify(data.UUID));
+                            }
 
                             session.sessionInit(data);
                         },
