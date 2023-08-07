@@ -1,73 +1,119 @@
 <style>
-    .landing-container {
+    #main-content {
+        margin-top: 0;
+        border-top: 1px solid #c0c0c0;
         background-color: white;
     }
+
     .landing-button {
         color: var(--catalyst-blue);
-        padding: 10px;
         border-radius: 5px;
         text-align: center;
         font-size: 20px;
-        font-weight: bold;
         border: 1px solid var(--catalyst-blue);
-        margin: 10px;
+        display: flex;
+        margin-bottom: 1em;
+        justify-content: space-between;
+    }
+
+    .landing-button > div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .landing-button i.fa-greater-than {
+        align-self: center;
+    }
+
+    .landing-container {
+        width: 80%;
+        margin: 5% auto 0 auto;
     }
 
     .left-side-landing {
+        display: flex;
+        flex-direction: column;
         background-color: #1a568C;
         text-align: center;
         justify-content: center;
+        align-items: center;
         color: white;
-        font-size: 1.5em;
-    }
+        font-size: 2em;
+        border: 1px solid #1a568C;
+        border-radius: 5px;
+        height: 60%;
+        margin-right: 5%;
 
-    .left-side-landing h5 {
+        @media (max-width: 990px) {
+            height: 350px;
+            margin-right: unset;
+        }
 
     }
 
     .right-side-landing {
-        text-align: left;
         color: var(--catalyst-blue);
-        font-size: 1.5em;
+        height: 50%;
+        padding-left: unset;
+        padding-right: unset;
+
+        @media (max-width: 990px) {
+            margin-top: 5%;
+        }
     }
 </style>
-<div class="landing-container">
+<div style="margin-left: 5%">
     <h1>Welcome to <i>NHLBI</i> BioData Catalyst</h1>
     <h1><b>Open PIC-SURE</b></h1>
-    <p>NHLBI BioData Catalyst® Powered by PIC-SURE can be used to explore studies, conduct, feasibility tests, create cohorts, and select data at the variable and variant level.</p>
+    <p>NHLBI BioData Catalyst® Powered by PIC-SURE can be used to explore studies, conduct, feasibility tests, create
+        cohorts, and select data at the variable and variant level.</p>
+</div>
+<div class="landing-container">
     <div class="row">
-        <div class="col-md-6 left-side-landing">
+        <div class="col-md-4 left-side-landing">
             <div class="row">
-                <h2 id="available-studies" class=""></h2>
+                <h2 id="available-studies"></h2>
                 <div id="available-studies-spinner"></div>
                 <h3>Available Studies</h3>
             </div>
             <div class="row">
-                <h2 id="open-participants" class=""></h2>
+                <h2 id="open-participants"></h2>
                 <div id="open-participants-spinner"></div>
                 <h3>Total Participants</h3>
             </div>
             <div class="row">
-                <h2 id="open-variables" class=""></h2>
+                <h2 id="open-variables"></h2>
                 <div id="open-variables-spinner"></div>
                 <h3>Total Variables</h3>
             </div>
         </div>
         <div class="col-md-6 right-side-landing">
-            <div class="row landing-button">
-                <b>Data Dashboard</b>
+            <div class="landing-button">
+                <div><p>Browse Available Studies in</p><b>Data Dashboard</b></div>
+                <i class="fa-light fa-greater-than"></i>
             </div>
-            <div class="row landing-button">
-                <b>PIC-SURE Open Access</b>
+            <div class="landing-button">
+                <div>
+                    <p></p>
+                    <b>BioData Catalyst ecosystem</b>
+                </div>
+                <i class="fa-light fa-greater-than"></i>
             </div>
-            <div class="row landing-button">
-                BioData Catalyst ecosystem
+            <div class="landing-button">
+                <div>
+                    <p></p>
+                    <b>BioData Catalyst ecosystem</b>
+                </div>
+                <i class="fa-light fa-greater-than"></i>
             </div>
             <a href="https://picsure.biodatacatalyst.nhlbi.nih.gov/picsureui/" target="_blank">
-            <div class="row landing-button">
-                <b>Log In</b> to Access Participant-Level Data with PIC-SURE Authorized Access
-            </div>
+                <div class="landing-button">
+                    <div><p>to Access Participant-Level Data with PIC-SURE Authorized Access</p><b>Log In</b></div>
+                    <i class="fa-light fa-greater-than"></i>
+                </div>
             </a>
         </div>
+        <div class="col-md-2"></div>
     </div>
 </div>

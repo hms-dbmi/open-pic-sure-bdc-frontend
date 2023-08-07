@@ -20,13 +20,12 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
             events: {},
             render: function () {
                 console.log(this.totalVars);
-                $('#open-variables').html(this.totalVars);
+                let totalVars = this.totalVars ? this.totalVars : 0;
 
                 if (landing.resources.open !== false) {
                     search.execute("\\_studies\\",
                         function (response) {
                             let openStudies = response.suggestions.length;
-                            $('#available-studies').html(openStudies);
 
                             let query = queryBuilder.generateQueryNew({}, {}, null, landing.resources.open);
                             query.query.expectedResultType = "CROSS_COUNT";
@@ -40,7 +39,10 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
                                 success: (function (response) {
                                     const parsedCountString = response[STUDY_CONSENTS] ? parseInt(response[STUDY_CONSENTS]).toLocaleString() : 0;
                                     $("#open-participants").html(parsedCountString);
+                                    $("#open-variables").html(parseInt(totalVars).toLocaleString());
+                                    $('#available-studies').html(openStudies);
                                 }).bind(this),
+
                                 statusCode: {
                                     401: function () {
                                     }
@@ -48,11 +50,13 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
                                 error: transportErrors.handleAll
                             });
 
+                            // This makes the spinner appear for all fields which looks better than just the one.
                             spinner.medium(deferredParticipants, "#open-participants-spinner", "spinner2");
+                            spinner.medium(deferredParticipants, "#open-variables-spinner", "spinner2");
+                            spinner.medium(deferredParticipants, "#available-studies-spinner", "spinner2");
                         },
                         landing.resources.open);
                 }
-
                 this.$el.html(this.template());
                 return this;
             }
