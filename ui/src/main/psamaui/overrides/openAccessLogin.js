@@ -25,6 +25,7 @@ define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs'
                                 localStorage.setItem('OPEN_ACCESS_UUID', JSON.stringify(data.UUID));
                             }
 
+                            console.log(data);
                             session.sessionInit(data);
                         },
                         error: function (data) {
