@@ -1,31 +1,45 @@
 <style>
-    .landing-button {
+    .landing-anchor {
         color: var(--catalyst-blue);
         border-radius: 5px;
         text-align: left;
-        font-size: 1.25em;
+        font-size: 1.825rem;
         border: 2px solid var(--catalyst-blue);
         display: flex;
         margin-bottom: 1em;
         justify-content: space-between;
-        padding: .625em;
+        padding: .625em .625em .3125em .625em;
         background-color: #f4f4f6;
+        text-decoration: none;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
 
-    .landing-button > div {
+    .landing-anchor:hover {
+        text-decoration: none;
+    }
+
+    .landing-anchor:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        text-decoration: none;
+    }
+
+    .landing-anchor > p {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .landing-button i.fa-greater-than, i.fa-arrow-up-right-from-square {
+    .landing-anchor i.fa-greater-than, i.fa-arrow-up-right-from-square {
         align-self: center;
-        font-size: 2em;
+        font-size: 3rem;
         padding-right: 1em;
     }
 
-    .landing-button i.fa-arrow-up-right-from-square {
-        font-size: 1.5em;
+    .landing-anchor i.fa-arrow-up-right-from-square {
+        font-size: 3rem;
     }
 
     .landing-container {
@@ -33,119 +47,110 @@
         margin: 2% auto 0 auto;
     }
 
-    .left-side-landing .row {
-        margin-bottom: 1.5em;
-    }
-
     .left-side-landing {
         display: flex;
         flex-direction: column;
+        flex: 1;
         background-color: #1a568C;
         text-align: center;
         justify-content: center;
         align-items: center;
         color: white;
-        font-size: 1.5em;
+        font-size: 2.25rem;
         font-weight: lighter;
         border: 1px solid #1a568C;
         border-radius: .6em;
         height: 50%;
         margin-right: 5%;
-        padding-top: 1em;
-
-        @media (max-width: 990px) {
-            height: 650px;
-            margin-right: unset;
-            font-size: 2em;
-        }
-
+        padding: .75em 0 .75em 0;
+        max-height: 550px;
+        min-height: 360px;
     }
 
-    .right-side-landing {
-        color: var(--catalyst-blue);
-        height: 50%;
-        padding-left: unset;
-        padding-right: unset;
-
-        @media (max-width: 990px) {
-            margin-top: 5%;
-        }
-
+    .left-side-landing p:not(:last-child) {
+        padding-bottom: 1em;
     }
 
     .landing-value {
-        font-size: 2em;
+        font-size: 4rem;
     }
 
     #main-content {
         margin-top: unset;
+        padding-top: unset;
     }
 
-    .right-side-landing a {
-
+    .right-side-landing {
+        display: flex;
+        flex-direction: column;
+        flex: 1.5;
+        color: var(--catalyst-blue);
+        justify-content: space-evenly;
+        height: 50%;
+        padding-left: unset;
+        padding-right: unset;
     }
+
+    @media (max-width: 992px) {
+        .left-side-landing, .right-side-landing {
+            flex: 1 0 100%; /* This ensures that each section takes up 100% width on smaller screens, causing them to stack */
+            width: 100%; /* Make them take the full width of the container */
+        }
+
+        .right-side-landing {
+            margin-top: 5%;
+        }
+    }
+
+
 </style>
 <div>
     <div style="margin-left: 5%; margin-right: 5%; font-size: 1.5em">
         <h1>Welcome to <i>NHLBI</i> BioData Catalyst</h1>
         <h1><b>Open PIC-SURE</b></h1>
-        <p><i>NHLBI BioData Catalyst® Powered by PIC-SURE</i> can be used to explore studies, conduct, feasibility tests,
+        <p><i>NHLBI BioData Catalyst® Powered by PIC-SURE</i> can be used to explore studies, conduct, feasibility
+            tests,
             create
             cohorts, and select data at the variable and variant level.</p>
     </div>
     <div class="landing-container">
-        <div class="row">
-            <div class="col-md-4 left-side-landing">
-                <div class="row">
-                    <div class="landing-value" id="available-studies"></div>
-                    <div id="available-studies-spinner"></div>
-                    <p>Available Studies</p>
-                </div>
-                <div class="row">
-                    <div class="landing-value" id="open-participants"></div>
-                    <div id="open-participants-spinner"></div>
-                    <p>Total Participants</p>
-                </div>
-                <div class="row">
-                    <div class="landing-value" id="open-variables"></div>
-                    <div id="open-variables-spinner"></div>
-                    <p>Total Variables</p>
-                </div>
-            </div>
-            <div class="col-md-6 right-side-landing">
-                <div class="landing-button">
-                    <div>
-                        <p>Browse Available Studies in</p>
-                        <b>Data Dashboard</b>
-                    </div>
-                    <i class="fa-light fa-greater-than"></i>
-                </div>
-                <div class="landing-button">
-                    <div>
-                        <p>Search Variables and Build Queries in</p>
-                        <b>Open PIC-SURE Explorer</b>
-                    </div>
-                    <i class="fa-light fa-greater-than"></i>
-                </div>
-                <a href="https://biodatacatalyst.nhlbi.nih.gov/">
-                <div class="landing-button">
-                    <div>
-                        <p>Browser Available Studies in</p>
-                        <b>BioData Catalyst ecosystem</b>
-                    </div>
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </div>
-                </a>
-                <a href="https://picsure.biodatacatalyst.nhlbi.nih.gov/picsureui/" target="_blank">
-                <div class="landing-button">
-                    <div>
-                        <p><b>Log In</b> to Access Participant-Level Data with<br />PIC-SURE Authorized Access</p>
-                    </div>
-                    <i class="fa-light fa-greater-than"></i>
-                </div>
-                </a>
-            </div>
-            <div class="col-md-1"></div>
+        <div class="col-md-4 left-side-landing">
+            <div class="landing-value" id="available-studies"></div>
+            <div class="landing-value" id="available-studies-spinner">0</div>
+            <p>Available Studies</p>
+            <div class="landing-value" id="open-participants"></div>
+            <div class="landing-value" id="open-participants-spinner">0</div>
+            <p>Total Participants</p>
+            <div class="landing-value" id="open-variables"></div>
+            <div class="landing-value" id="open-variables-spinner">0</div>
+            <p>Total Variables</p>
         </div>
+        <div class="col-md-6 right-side-landing">
+            <a class="landing-anchor" href="/picsureui/dataAccess" tabindex="0">
+                <div>
+                    <p>Browse Available Studies in<br/><b>Data Dashboard</b></p>
+                </div>
+                <i class="fa-light fa-greater-than"></i>
+            </a>
+            <a class="landing-anchor" href="/picsureui/openAccess#" tabindex="0">
+                <div>
+                    <p>Search Variables and Build Queries in<br/><b>Open PIC-SURE Explorer</b></p>
+                </div>
+                <i class="fa-light fa-greater-than"></i>
+            </a>
+            <a class="landing-anchor" href="https://biodatacatalyst.nhlbi.nih.gov/" target="_blank" tabindex="0">
+                <div>
+                    <p>Learn more about the <br/><b>BioData Catalyst ecosystem</b></p>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+            <a href="https://picsure.biodatacatalyst.nhlbi.nih.gov/picsureui/" target="_blank" class="landing-anchor" tabindex="0">
+                <div style="justify-content: center">
+                    <p><b>Log In</b> to Access Participant-Level Data with<br/>PIC-SURE Authorized Access</p>
+                </div>
+                <i class="fa-light fa-greater-than"></i>
+            </a>
+        </div>
+        <div class="col-md-1"></div>
     </div>
 </div>

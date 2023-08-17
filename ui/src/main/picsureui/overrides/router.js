@@ -18,6 +18,16 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
             landing.render();
         };
 
+        let displayDataAccess = function() {
+            $(".header-btn.active").removeClass('active');
+            $(".header-btn[data-href='/picsureui/dataAccess']").addClass('active');
+            $('#main-content').empty();
+
+            var studyAccessView = new studyAccess.View;
+            $('#main-content').append(studyAccessView.$el);
+            studyAccessView.render();
+        };
+
         let displayOpenAccess = function() {
             sessionStorage.setItem("isOpenAccess", true);
             Backbone.pubSub.trigger('destroySearchView');
@@ -71,6 +81,9 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
                  * Ex:
                  * "picsureui/queryBuilder2" : function() { renderQueryBuilder2(); }
                  */
+                // "psamaui/login(/)" : undefined,
+                // "pamaui/logout(/)" : undefined,
+                "picsureui/dataAccess" : displayDataAccess,
                 "picsureui/openAccess" : function () {
                     displayOpenAccess.call(this);
                 },

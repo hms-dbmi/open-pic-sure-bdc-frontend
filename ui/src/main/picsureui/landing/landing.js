@@ -2,7 +2,7 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
         "picSure/queryBuilder", "common/spinner", "common/transportErrors", "text!studyAccess/studies-data.json",
         "search-interface/filter-model"],
     function ($, BB, HBS, landingTemplate, search, settings, queryBuilder, spinner,
-              transportErrors, filterModel) {
+              transportErrors) {
         const STUDY_CONSENTS = "\\_studies_consents\\";
         var landing = {
             open_cnts: {},
@@ -19,47 +19,62 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
             },
             events: {},
             render: function () {
-                console.log(this.totalVars);
-                let totalVars = this.totalVars ? this.totalVars : 0;
+                search.execute("\\_studies\\", function (response) {
+                        let openStudies = response.suggestions.length;
 
-                if (landing.resources.open !== false) {
-                    search.execute("\\_studies\\",
-                        function (response) {
-                            let openStudies = response.suggestions.length;
+                        let query = queryBuilder.generateQueryNew({}, {}, null, landing.resources.open);
+                        query.query.expectedResultType = "CROSS_COUNT";
+                        query.query.crossCountFields = [STUDY_CONSENTS];
+                        let deferredParticipants = $.ajax({
+                            url: window.location.origin + "/picsure/query/sync",
+                            type: 'POST',
+                            headers: {"Authorization": "Bearer " + JSON.parse(sessionStorage.getItem("session")).token},
+                            contentType: 'application/json',
+                            data: JSON.stringify(query),
+                            success: (function (response) {
+                                const parsedCountString = response[STUDY_CONSENTS] ? parseInt(response[STUDY_CONSENTS]).toLocaleString() : 0;
+                                $("#open-participants").html(parsedCountString);
+                                $('#available-studies').html(openStudies);
+                            }).bind(this),
 
-                            let query = queryBuilder.generateQueryNew({}, {}, null, landing.resources.open);
-                            query.query.expectedResultType = "CROSS_COUNT";
-                            query.query.crossCountFields = [STUDY_CONSENTS];
-                            let deferredParticipants = $.ajax({
-                                url: window.location.origin + "/picsure/query/sync",
-                                type: 'POST',
-                                headers: {"Authorization": "Bearer " + JSON.parse(sessionStorage.getItem("session")).token},
-                                contentType: 'application/json',
-                                data: JSON.stringify(query),
-                                success: (function (response) {
-                                    const parsedCountString = response[STUDY_CONSENTS] ? parseInt(response[STUDY_CONSENTS]).toLocaleString() : 0;
-                                    $("#open-participants").html(parsedCountString);
-                                    $("#open-variables").html(parseInt(totalVars).toLocaleString());
-                                    $('#available-studies').html(openStudies);
-                                }).bind(this),
+                            statusCode: {
+                                401: function () {
+                                }
+                            },
+                            error: transportErrors.handleAll
+                        });
 
-                                statusCode: {
-                                    401: function () {
-                                    }
-                                },
-                                error: transportErrors.handleAll
-                            });
+                        let deferredVariables = $.ajax({
+                            url: window.location.origin + "/picsure/search/36363664-6231-6134-2D38-6538652D3131",
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                "query": {
+                                    "searchTerm": "",
+                                    "includedTags": [],
+                                    "excludedTags": [],
+                                    "returnTags": false,
+                                    "limit": 1
+                                }
+                            }),
+                            success: function (response) {
+                                $("#open-variables").html(parseInt(response.results.numResults).toLocaleString());
+                            }.bind(this),
+                            error: function (response) {
+                                console.log(response);
+                            }
+                        });
 
-                            // This makes the spinner appear for all fields which looks better than just the one.
-                            spinner.medium(deferredParticipants, "#open-participants-spinner", "spinner2");
-                            spinner.medium(deferredParticipants, "#open-variables-spinner", "spinner2");
-                            spinner.medium(deferredParticipants, "#available-studies-spinner", "spinner2");
-                        },
-                        landing.resources.open);
-                }
+                        spinner.medium(deferredVariables, "#open-variables-spinner", "spinner2");
+                        spinner.medium(deferredParticipants, "#open-participants-spinner", "spinner2");
+                        spinner.medium(deferredParticipants, "#available-studies-spinner", "spinner2");
+                    },
+                landing.resources.open);
+
                 this.$el.html(this.template());
                 return this;
             }
         });
-    });
+    })
+;
 
