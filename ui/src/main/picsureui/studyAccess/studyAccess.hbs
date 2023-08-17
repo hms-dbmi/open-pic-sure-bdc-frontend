@@ -1,0 +1,69 @@
+<style>
+    #study-access-authorized-access {
+        position: absolute;
+        right: 2.5%;
+        font-size: 1.825rem;
+        max-width: 25%;
+        text-overflow: unset;
+        white-space: unset;
+        overflow: unset;
+        text-align: left;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: .5em 1em .25em 1em;
+        border-radius: .625em;
+        align-self: center;
+    }
+
+    #study-access-authorized-access i.fa-greater-than {
+        font-size: 5rem;
+        align-self: center;
+        padding-left: .25em;
+    }
+
+    #study-access-authorized-access p {
+        text-wrap: none;
+        align-self: center;
+    }
+
+    #main-content {
+        margin-top: unset;
+        padding-top: unset;
+    }
+
+    #data-access-btn {
+        background: var(--catalyst-blue);
+    }
+</style>
+<div style="display: flex; flex-direction: row; align-items: flex-start; width: 100%">
+    <div style="margin-left: 2.5%; margin-right: 2.5%; font-size: 1.5em">
+        <h2>Data Dashboard</h2>
+        <p>View all studies and associated information in PIC-SURE separated by consent group.</p>
+    </div>
+    <div title="Log In to Authorized PIC-SURE to View Your Access to Data"
+         class="btn btn-primary btn-large authorized-access-btn"
+         id="study-access-authorized-access">
+        <p>Log In to <b>Authorized PIC-SURE</b> to<br/> View Your Access to Data</p>
+        <i class="fa-solid fa-greater-than"></i>
+    </div>
+</div>
+<div id="studies-access">
+    <div class="flex-col table-responsive" style="overflow-x: visible !important;">
+        <table id="data-access-table" style="width:100%" class="table table-striped row-border hover" role="region"
+               aria-label="A table showing infomation about studies included in Pic-sure. Use the first column to request access to studies."></table>
+        <div class="button-container">
+            <div class="btn-group button-spacer" role="group">
+                <button type="button" class="btn btn-default btn-lg study-lst-btn1 study-lst-btn-no-hov" tabindex="-1">
+                    Studies with data unavailable (withdrawn or no consents)
+                </button>
+                <button type="button" class="btn btn-default btn-lg study-lst-btn2">
+                    <span id="no-consent-toggle" class="glyphicon glyphicon-chevron-down"></span>
+                </button>
+            </div>
+        </div>
+        <table id="data-access-table-na" style="width:100%" class="table table-striped row-border hover" role="region"
+               aria-label="A table showing information about studies with data unavailable"></table>
+    </div>
+</div>

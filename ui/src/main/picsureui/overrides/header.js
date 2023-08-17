@@ -14,8 +14,7 @@ define(["header/goToAuthorized", "common/modal"], function (goToAuthorized, moda
             console.log("renderExt called");
 
 
-            $(document).on('click', '#authorized-access-btn', function (event) {
-                console.log("authorized-access-btn");
+            $(document).on('click', '.authorized-access-btn', function (event) {
                 event.preventDefault();
 
                 modal.displayModal(
@@ -23,7 +22,7 @@ define(["header/goToAuthorized", "common/modal"], function (goToAuthorized, moda
                     "You are about to go to Authorized PIC-SURE",
                     function () {
                         // refocus on the authorized access button
-                        $('#authorized-access-btn').focus();
+                        event.target.focus();
                     },
                     {width: "45em", isHandleTabs: true});
             });
