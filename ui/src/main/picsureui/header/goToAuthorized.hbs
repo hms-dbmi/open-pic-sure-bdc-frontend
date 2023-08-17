@@ -1,10 +1,6 @@
 <style>
-    .feature-list {
+    .feature-list, .auth-modal-p {
         font-size: 1.625rem;
-    }
-
-    p {
-        font-size: 1.825rem;
     }
 
     .redirect-buttons {
@@ -20,18 +16,19 @@
     }
 
     .redirect-buttons button i {
-        margin-left: .25em;
+        margin-left: .75em;
         font-size: 1.625em;
+        padding-right: unset;
     }
 </style>
-<p>Log In to PIC-SURE to use even more features, including:</p>
+<p class="auth-modal-p">Log In to PIC-SURE to use even more features, including:</p>
 <ul class="feature-list">
     <li>Building cohorts with <b>genomic filters</b></li>
     <li>Visualizing <b>variable distributions of interest</b></li>
     <li>Exporting <b>participant-level data</b> for analysis</li>
     <li>Viewing your <b>personal data access</b></li>
 </ul>
-<p><b>Are you sure you want to go to Authorized PIC-SURE?</b></p>
+<p class="auth-modal-p"><b>Are you sure you want to go to Authorized PIC-SURE?</b></p>
 <div class="redirect-buttons">
     <button title="No" id="close-auth-modal" type="button" class="btn btn-default" tabindex="0">No</button>
     <button title="Yes" type="button" id="redirect-to-auth" class="btn btn-primary" tabindex="0">Yes<i style="font-size: 1em" class="fa-solid fa-arrow-up-right-from-square"></i></button>
