@@ -5,13 +5,15 @@ define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs'
         return {
             doLogin: function () {
                 // 1. Check if the user is already logged in
-                if (sessionStorage.getItem('token')) {
+                let sessionData = sessionStorage.getItem('session');
+                sessionData = sessionData ? JSON.parse(sessionData) : null;
+
+                if (sessionData && sessionData?.token) {
                     // The user is already logged in, so we can just redirect them to the landing page.
-                    console.log("Session token found, redirecting to landing page.");
+                    window.location = '/picsureui/';
                 } else {
                     let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
 
-                    // userId is essentially optional, so we can just continue with the login process if it's not set.
                     $.ajax({
                         url: '/psama/open/authentication',
                         type: 'post',
@@ -20,12 +22,11 @@ define(['picSure/settings', 'jquery', 'handlebars', 'text!login/fence_login.hbs'
                         }),
                         contentType: 'application/json',
                         success: function (data) {
-                            if (data.UUID) {
+                            if (data.uuid) {
                                 // we need to set the UUID cookie here, because the backend will not do it for us.
-                                localStorage.setItem('OPEN_ACCESS_UUID', JSON.stringify(data.UUID));
+                                localStorage.setItem('OPEN_ACCESS_UUID', JSON.stringify(data.uuid));
                             }
 
-                            console.log(data);
                             session.sessionInit(data);
                         },
                         error: function (data) {
