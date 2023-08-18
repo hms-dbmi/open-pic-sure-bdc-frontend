@@ -216,12 +216,12 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                             type: 'string'
                         },
                         {
-                            targets: [1, 3, 4, 5, 6, 7, 10],
+                            targets: [0, 2, 3, 4, 5, 6, 9],
                             className: 'dt-center',
                             type: 'string'
                         },
                         {
-                            targets: [2, 8, 9],
+                            targets: [1, 7, 8],
                             className: 'dt-left',
                             type: 'string'
                         },
@@ -248,7 +248,6 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                     "responsive": true,
                     "tabIndex": -1,
                     columns: [
-                        {title: 'Access', data: null},
                         {title: 'Abbreviation', data: 'abbreviated_name'},
                         {title: 'Name', data: 'full_study_name'},
                         {title: 'Study Focus', data: 'study_focus'},
@@ -258,21 +257,22 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                         {title: 'Samples Sequenced', data: 'genetic_sample_size'},
                         {title: 'Additional Infomation', data: 'additional_information'},
                         {title: 'Consents', data: 'consent_group_name'},
-                        {title: 'Accession', data: 'accession'},
+                        {title: 'dbGaP Accession', data: 'accession'},
+                        {title: 'Link to dbGaP Study Page', data: null},
                     ],
                     columnDefs: [
                         {
-                            targets: 0,
-                            className: 'center-vert dt-center',
-                            type: 'string'
-                        },
-                        {
-                            targets: [1, 3, 4, 5, 6, 7, 10],
+                            targets: 10,
                             className: 'dt-center',
                             type: 'string'
                         },
                         {
-                            targets: [2, 8, 9],
+                            targets: [0, 2, 3, 4, 5, 6, 9],
+                            className: 'dt-center',
+                            type: 'string'
+                        },
+                        {
+                            targets: [1, 7, 8],
                             className: 'dt-left',
                             type: 'string'
                         },
@@ -281,7 +281,7 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                                 return '<span class="btn btn-default disabled">N/A</span>';
                             },
                             type: 'string',
-                            targets: 0
+                            targets: 10
                         }
                     ]
                 });
