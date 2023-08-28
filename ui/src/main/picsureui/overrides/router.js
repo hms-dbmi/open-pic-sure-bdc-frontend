@@ -8,42 +8,42 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
               FilterListView, SearchView, ToolSuiteView, queryResultsView,
               ApiPanelView, filterModel, tagFilterModel, openToolSuiteView,
               landingView, session) {
+        let createUserSession = function (that, callback, args) {
+            let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
+            if (uuid) {
+                uuid = JSON.parse(uuid);
+            }
+
+            $.ajax({
+                url: '/psama/open/authentication',
+                type: 'POST',
+                data: JSON.stringify({
+                    UUID: uuid
+                }),
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.uuid) {
+                        // we need to set the UUID cookie here, because the backend will not do it for us.
+                        localStorage.setItem('OPEN_ACCESS_UUID', JSON.stringify(data.uuid));
+                    }
+
+                    session.sessionInit(data);
+                    that.renderHeaderAndFooter();
+                    if (callback) {
+                        callback.apply(that, args);
+                    }
+                },
+                error: function (data) {
+                    // handle error
+                    console.log(data);
+                }
+            });
+        };
+
         let execute = function (callback, args, name) {
             let deferred = $.Deferred();
             if (!session.isValid(deferred)) {
-                let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
-                if (uuid) {
-                    uuid = JSON.parse(uuid);
-                }
-
-                const that = this;
-
-                $.ajax({
-                    url: '/psama/open/authentication',
-                    type: 'POST',
-                    data: JSON.stringify({
-                        UUID: uuid
-                    }),
-                    contentType: 'application/json',
-                    success: function (data) {
-                        console.log(data);
-                        if (data.uuid) {
-                            // we need to set the UUID cookie here, because the backend will not do it for us.
-                            localStorage.setItem('OPEN_ACCESS_UUID', JSON.stringify(data.uuid));
-                        }
-
-                        session.sessionInit(data);
-                        that.renderHeaderAndFooter();
-                        if (callback) {
-                            callback.apply(that, args);
-                        }
-                    },
-                    error: function (data) {
-                        // handle error
-                        console.log(data);
-                    }
-                });
-
+                createUserSession(this, callback, args);
             } else {
                 this.renderHeaderAndFooter();
                 if (callback) {
