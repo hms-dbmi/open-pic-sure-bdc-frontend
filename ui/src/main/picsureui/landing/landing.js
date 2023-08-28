@@ -4,18 +4,10 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
     function ($, BB, HBS, landingTemplate, search, settings, queryBuilder, spinner,
               transportErrors) {
         const STUDY_CONSENTS = "\\_studies_consents\\";
-        var landing = {
-            open_cnts: {},
-            resources: {
-                open: settings.openAccessResourceId,
-            }
-        };
 
         return BB.View.extend({
-            initialize: function (params) {
+            initialize: function () {
                 this.template = HBS.compile(landingTemplate);
-
-                this.totalVars = params.totalVars;
             },
             events: {},
             render: function () {
@@ -58,8 +50,9 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
                                 }
                             }),
                             success: function (response) {
+                                console.log(response);
                                 $("#open-variables").html(parseInt(response.results.numResults).toLocaleString());
-                            }.bind(this),
+                            },
                             error: function (response) {
                                 console.log(response);
                             }
@@ -69,7 +62,7 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
                         spinner.medium(deferredParticipants, "#open-participants-spinner", "spinner2");
                         spinner.medium(deferredParticipants, "#available-studies-spinner", "spinner2");
                     },
-                landing.resources.open);
+                    landing.resources.open);
 
                 this.$el.html(this.template());
                 return this;
