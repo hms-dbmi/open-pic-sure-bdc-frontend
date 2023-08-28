@@ -4,6 +4,11 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
     function ($, BB, HBS, landingTemplate, search, settings, queryBuilder, spinner,
               transportErrors) {
         const STUDY_CONSENTS = "\\_studies_consents\\";
+        const landing = {
+            resources: {
+                open: settings.openAccessResourceId,
+            }
+        };
 
         return BB.View.extend({
             initialize: function () {
