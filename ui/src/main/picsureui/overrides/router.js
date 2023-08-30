@@ -74,7 +74,7 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
 
         let displayOpenAccess = function () {
             sessionStorage.setItem("isOpenAccess", true);
-            Backbone.pubSub.trigger('destroySearchView');
+            BB.pubSub.trigger('destroySearchView');
             $(".header-btn.active").removeClass('active');
             $(".header-btn[data-href='/picsureui/openAccess#']").addClass('active');
             $('#main-content').empty();
