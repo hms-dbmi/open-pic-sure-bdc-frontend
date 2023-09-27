@@ -1,4 +1,4 @@
-define(["header/goToAuthorized", "common/modal"], function (goToAuthorized, modal) {
+define(["header/goToAuthorized", "header/termsOfService", "common/modal"], function (goToAuthorized, termsOfService, modal) {
     return {
         /*
          * The path to a logo image incase you don't want the default PrecisionLink one.
@@ -20,6 +20,17 @@ define(["header/goToAuthorized", "common/modal"], function (goToAuthorized, moda
                 modal.displayModal(
                     new goToAuthorized(),
                     "You are about to go to Authorized PIC-SURE",
+                    function () {
+                        // refocus on the authorized access button
+                        event.target.focus();
+                    },
+                    {width: "45em", isHandleTabs: true});
+            });
+
+            $(document).on('click', '.terms-of-service-btn', function (event) {
+                modal.displayModal(
+                    new termsOfService(),
+                    "NHLBI BioData Catalyst® (BDC) Powered by Open PIC-SURE Terms of Use",
                     function () {
                         // refocus on the authorized access button
                         event.target.focus();
