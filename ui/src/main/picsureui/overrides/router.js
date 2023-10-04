@@ -2,12 +2,11 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
         "openPicsure/outputPanel", "picSure/queryBuilder", "text!openPicsure/searchHelpTooltipOpen.hbs", "overrides/outputPanel",
         "search-interface/filter-list-view", "search-interface/search-view", "search-interface/tool-suite-view",
         "search-interface/query-results-view", "api-interface/apiPanelView", "search-interface/filter-model",
-        "search-interface/tag-filter-model", "openPicsure/tool-suite-view", "landing/landing", "common/session"],
+        "search-interface/tag-filter-model", "landing/landing", "common/session"],
     function (BB, HBS, studyAccess, settings, filterList,
               outputPanel, queryBuilder, searchHelpTooltipTemplate, output,
               FilterListView, SearchView, ToolSuiteView, queryResultsView,
-              ApiPanelView, filterModel, tagFilterModel, openToolSuiteView,
-              landingView, session) {
+              ApiPanelView, filterModel, tagFilterModel, landingView, session) {
         let createUserSession = function (that, callback, args) {
             let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
             if (uuid) {
@@ -79,7 +78,7 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
             $(".header-btn[data-href='/picsureui/openAccess#']").addClass('active');
             $('#main-content').empty();
             $('#main-content').append(this.layoutTemplate(settings));
-            let toolSuiteView = new openToolSuiteView({el: $('#tool-suite-panel')});
+            let toolSuiteView = new ToolSuiteView({el: $('#tool-suite-panel')});
             toolSuiteView.render();
 
             const outputPanelView = new outputPanel.View({toolSuiteView: toolSuiteView});
