@@ -153,7 +153,15 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
             },
             defaultAction: displayLandingPage,
             execute: function (callback, args, name) {
-                execute.apply(this, [callback, args, name]);
+                let deferred = $.Deferred();
+                if (!session.isValid(deferred)) {
+                    createUserSession(this, callback, args);
+                } else {
+                    this.renderHeaderAndFooter();
+                    if (callback) {
+                        callback.apply(this, args);
+                    }
+                }
             }
         };
     }
