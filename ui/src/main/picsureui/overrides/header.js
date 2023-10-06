@@ -35,7 +35,7 @@ define(["header/goToAuthorized", "header/termsOfService", "common/modal"], funct
                         // refocus on the authorized access button
                         event.target.focus();
                     },
-                    {width: "45em", isHandleTabs: true});
+                    {width: "90em", isHandleTabs: true});
             });
         }
     };
