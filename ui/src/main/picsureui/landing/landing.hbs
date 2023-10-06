@@ -1,0 +1,154 @@
+<style>
+    .landing-anchor {
+        color: var(--catalyst-blue);
+        border-radius: 5px;
+        text-align: left;
+        font-size: 1.825rem;
+        border: 2px solid var(--catalyst-blue);
+        display: flex;
+        margin-bottom: 1em;
+        justify-content: space-between;
+        padding: .625em .625em .3125em .625em;
+        background-color: #f4f4f6;
+        text-decoration: none;
+        min-height: 8vh;
+    }
+
+    .landing-anchor:hover {
+        text-decoration: none;
+    }
+
+    .landing-anchor:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        text-decoration: none;
+    }
+
+    .landing-anchor > p {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .landing-anchor i.fa-greater-than, i.fa-arrow-up-right-from-square {
+        align-self: center;
+        font-size: 3rem;
+        padding-right: 1em;
+    }
+
+    .landing-anchor i.fa-arrow-up-right-from-square {
+        font-size: 3rem;
+    }
+
+    .landing-container {
+        width: 80%;
+        margin: 2% auto 0 auto;
+    }
+
+    .left-side-landing {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        background-color: #1a568C;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 2.25rem;
+        font-weight: lighter;
+        border: 1px solid #1a568C;
+        border-radius: .6em;
+        height: 50%;
+        margin-right: 5%;
+        padding: .75em 0 .75em 0;
+        max-height: 550px;
+        min-height: 360px;
+    }
+
+    .left-side-landing p:not(:last-child) {
+        padding-bottom: 1em;
+    }
+
+    .landing-value {
+        font-size: 4rem;
+    }
+
+    #main-content {
+        margin-top: unset;
+        padding-top: unset;
+    }
+
+    .right-side-landing {
+        display: flex;
+        flex-direction: column;
+        flex: 1.5;
+        color: var(--catalyst-blue);
+        justify-content: space-evenly;
+        height: 50%;
+        padding-left: unset;
+        padding-right: unset;
+        min-height: 360px;
+    }
+
+    @media (max-width: 992px) {
+        .left-side-landing, .right-side-landing {
+            flex: 1 0 100%; /* This ensures that each section takes up 100% width on smaller screens, causing them to stack */
+            width: 100%; /* Make them take the full width of the container */
+        }
+
+        .right-side-landing {
+            margin-top: 5%;
+        }
+    }
+
+
+</style>
+<div>
+    <div style="margin-left: 5%; margin-right: 5%; font-size: 1.5em">
+        <h1>Welcome to <b>Open PIC-SURE</b></h1>
+        <p><i>NHLBI BioData Catalyst® Powered by PIC-SURE</i> can be used to explore studies, conduct, feasibility
+            tests,
+            create
+            cohorts, and select data at the variable and variant level.</p>
+    </div>
+    <div class="landing-container">
+        <div class="col-md-4 left-side-landing">
+            <div class="landing-value" id="available-studies"></div>
+            <div class="landing-value" id="available-studies-spinner">0</div>
+            <p>Available Studies</p>
+            <div class="landing-value" id="open-participants"></div>
+            <div class="landing-value" id="open-participants-spinner">0</div>
+            <p>Total Participants</p>
+            <div class="landing-value" id="open-variables"></div>
+            <div class="landing-value" id="open-variables-spinner">0</div>
+            <p>Total Variables</p>
+        </div>
+        <div class="col-md-6 right-side-landing">
+            <a class="landing-anchor" href="/picsureui/dataAccess" tabindex="0">
+                <div>
+                    <p>Browse Available Studies in<br/><b>Data Dashboard</b></p>
+                </div>
+                <i class="fa-solid fa-greater-than"></i>
+            </a>
+            <a class="landing-anchor" href="/picsureui/openAccess#" tabindex="0">
+                <div>
+                    <p>Search Variables and Build Queries in<br/><b>Open PIC-SURE Explorer</b></p>
+                </div>
+                <i class="fa-solid fa-greater-than"></i>
+            </a>
+            <a class="landing-anchor" href="https://biodatacatalyst.nhlbi.nih.gov/" target="_blank" tabindex="0">
+                <div>
+                    <p>Learn more about the <br/><b>BDC ecosystem</b></p>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+            <a href="https://picsure.biodatacatalyst.nhlbi.nih.gov/picsureui/" target="_blank" class="landing-anchor" tabindex="0">
+                <div style="justify-content: center">
+                    <p><b>Log In</b> to Access Participant-Level Data with<br/>Authorized PIC-SURE</p>
+                </div>
+                <i class="fa-solid fa-greater-than"></i>
+            </a>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
