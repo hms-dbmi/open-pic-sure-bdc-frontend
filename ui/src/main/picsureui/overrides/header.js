@@ -13,7 +13,9 @@ define(["header/goToAuthorized", "header/termsOfService", "common/modal"], funct
         renderExt: function () {
             console.log("renderExt called");
 
-
+            // This is used in two places. The header is rendered before one of the locations
+            // is available. By binding the click event to the document, we can ensure that
+            // the event will be handled when the element is available.
             $(document).on('click', '.authorized-access-btn', function (event) {
                 event.preventDefault();
 
@@ -32,8 +34,8 @@ define(["header/goToAuthorized", "header/termsOfService", "common/modal"], funct
                     new termsOfService(),
                     "NHLBI BioData Catalyst® (BDC) Powered by Open PIC-SURE Terms of Use",
                     function () {
-                        // refocus on the authorized access button
-                        event.target.focus();
+                        // Focus the help dropdown menu
+                        $("#help-dropdown-toggle").focus();
                     },
                     {width: "90em", isHandleTabs: true});
             });
