@@ -73,15 +73,6 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
 
         let displayOpenAccess = function () {
             sessionStorage.setItem("isOpenAccess", true);
-
-            // Temporary fix. Pubsub should be initialized in main.js, but it is not.
-            // This is causing the search view to not be destroyed when navigating to open access.
-            // This is a temporary fix until the root cause is found.
-            // TODO: Remove this when the root cause is found.
-            if (!BB.pubSub) {
-                BB.pubSub = _.extend({}, BB.Events);
-            }
-
             BB.pubSub.trigger('destroySearchView');
 
             $(".header-btn.active").removeClass('active');

@@ -27,7 +27,7 @@ define(["header/goToAuthorized", "header/termsOfService", "common/modal"], funct
                     {width: "45em", isHandleTabs: true});
             });
 
-            $(document).on('click', '.terms-of-service-btn', function (event) {
+            $(document).on('click', '#open-tos-modal', function (event) {
                 modal.displayModal(
                     new termsOfService(),
                     "NHLBI BioData Catalyst® (BDC) Powered by Open PIC-SURE Terms of Use",
