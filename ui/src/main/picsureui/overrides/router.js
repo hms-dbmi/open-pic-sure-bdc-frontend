@@ -1,9 +1,9 @@
-define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings", "filter/filterList",
+define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picSure/settings", "filter/filterList",
         "openPicsure/outputPanel", "picSure/queryBuilder", "text!openPicsure/searchHelpTooltipOpen.hbs", "overrides/outputPanel",
         "search-interface/filter-list-view", "search-interface/search-view", "search-interface/tool-suite-view",
         "search-interface/query-results-view", "api-interface/apiPanelView", "search-interface/filter-model",
         "search-interface/tag-filter-model", "landing/landing", "common/session"],
-    function (BB, HBS, studyAccess, settings, filterList,
+    function (BB, _, HBS, studyAccess, settings, filterList,
               outputPanel, queryBuilder, searchHelpTooltipTemplate, output,
               FilterListView, SearchView, ToolSuiteView, queryResultsView,
               ApiPanelView, filterModel, tagFilterModel, landingView, session) {
@@ -66,7 +66,7 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
             $(".header-btn[data-href='/picsureui/dataAccess']").addClass('active');
             $('#main-content').empty();
 
-            var studyAccessView = new studyAccess.View;
+            var studyAccessView = new studyAccess.View();
             $('#main-content').append(studyAccessView.$el);
             studyAccessView.render();
         };
@@ -74,11 +74,16 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
         let displayOpenAccess = function () {
             sessionStorage.setItem("isOpenAccess", true);
             BB.pubSub.trigger('destroySearchView');
+
             $(".header-btn.active").removeClass('active');
             $(".header-btn[data-href='/picsureui/openAccess#']").addClass('active');
             $('#main-content').empty();
             $('#main-content').append(this.layoutTemplate(settings));
-            let toolSuiteView = new ToolSuiteView({el: $('#tool-suite-panel')});
+            let toolSuiteView = new ToolSuiteView({
+                el:
+                    $('#tool-suite-panel')
+                , isOpenAccess: true
+            });
             toolSuiteView.render();
 
             const outputPanelView = new outputPanel.View({toolSuiteView: toolSuiteView});
@@ -131,13 +136,15 @@ define(["backbone", "handlebars", "studyAccess/studyAccess", "picSure/settings",
                 "picsureui/openAccess": function () {
                     displayOpenAccess.call(this);
                 },
-                "picsureui/queryBuilder(/)": displayOpenAccess,
+                "picsureui/queryBuilder(/)": function () {
+                    displayOpenAccess.call(this);
+                },
                 "picsureui/api": displayAPI,
                 "picsureui(/)": displayLandingPage,
             },
             defaultAction: displayLandingPage,
             execute: function (callback, args, name) {
-                execute.apply(this, [callback, args, name]);
+                execute.call(this, callback, args, name);
             }
         };
     }

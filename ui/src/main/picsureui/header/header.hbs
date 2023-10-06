@@ -44,6 +44,7 @@
         display: none;
     }
 
+    .nav-dropdown-menu > li > button,
     .nav-dropdown-menu > li > a {
         display: block;
         padding: 3px 20px;
@@ -54,11 +55,22 @@
         white-space: nowrap;
     }
 
+    .nav-dropdown-menu > li > button:hover,
+    .nav-dropdown-menu > li > button:focus,
     .nav-dropdown-menu > li > a:hover,
     .nav-dropdown-menu > li > a:focus {
         text-decoration: none;
         color: #262626;
         background-color: #f5f5f5;
+    }
+
+    /* Format the button so it looks like the a elements in the drop down list */
+    .nav-dropdown-menu > li > button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        text-align: left;
     }
 
     #top-header {
@@ -154,7 +166,13 @@
             {{#if helpLink}}
                 <li id="contact-us-option" class="dropdown"
                     aria-label="Contact Us link, clicking here will open a link in a new tab"><a href="{{{helpLink}}}">Contact
-                    Us</a></li>{{/if}}
+                    Us</a>
+                </li>
+            {{/if}}
+            <li id="terms-of-use" class="dropdown"
+                aria-label="Terms of Use, clicking here will open a link in a new tab">
+                <button id="open-tos-modal">Terms of Use</button>
+            </li>
         </ul>
         <a class="header-btn header-navigation authorized-access-btn" id="authorized-access-btn"
            tabindex="-1" title="Go to Authorized PIC-SURE"
