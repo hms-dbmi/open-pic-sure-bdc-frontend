@@ -11,6 +11,8 @@
     --catalyst-dark-blue: #12385a;
     --catalyst-bright-blue: #41abf5;
     --catalyst-dark-grey: #393939;
+
+    --picsure-primary: var(--catalyst-blue);
 }
 
 /*Overrides for bootstrap*/
