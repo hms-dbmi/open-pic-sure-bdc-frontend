@@ -139,7 +139,7 @@ body {
 }
 
 .header-btn:hover {
-    background-color: var(--nhlbi-red);
+    background-color: var(--catalyst-blue);
     color: white;
     text-decoration: none;
 }
@@ -788,13 +788,13 @@ remove when above bug is fixed */
     background-color: var(--catalyst-dark-blue);
     height: max-content;
     min-height: 100%;
-    border-radius: 0px;
+    border-radius: 5px 0px 0px 0px;
 }
 
 .panel .results-panel-header {
     color: white;
     border-bottom: none;
-    padding: 2px 15px;
+    padding: 1.125rem 0.9375rem 0.125rem 0.9375rem;
 }
 
 .panel .search-resutls-panel-heading {
