@@ -794,7 +794,7 @@ remove when above bug is fixed */
 .panel .results-panel-header {
     color: white;
     border-bottom: none;
-    padding: 0.625rem 0.9375rem 0.125rem 0.9375rem;
+    padding: 1.125rem 0.9375rem 0.125rem 0.9375rem;
 }
 
 .panel .search-resutls-panel-heading {
