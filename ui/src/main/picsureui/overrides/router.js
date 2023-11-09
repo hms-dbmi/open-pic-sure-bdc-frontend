@@ -93,7 +93,7 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
 
             const parsedSess = JSON.parse(sessionStorage.getItem("session"));
             console.log("parsedSess {}", parsedSess.queryTemplate);
-            if (parsedSess.queryTemplate === null || parsedSess.queryTemplate === undefined || parsedSess.queryTemplate === 'undefined' || parsedSess.queryTemplate === 'null') {
+            if (parsedSess.queryTemplate === undefined) {
                 parsedSess.queryTemplate = "{}";
             }
 
