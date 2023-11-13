@@ -92,7 +92,6 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
             $('#query-results').append(outputPanelView.$el);
 
             const parsedSess = JSON.parse(sessionStorage.getItem("session"));
-            console.log("parsedSess {}", parsedSess.queryTemplate);
             if (parsedSess.queryTemplate === undefined) {
                 parsedSess.queryTemplate = "{}";
             }
