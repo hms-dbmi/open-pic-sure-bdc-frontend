@@ -20,12 +20,17 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
             handleLandingSearch: function (event) {
                 // Log the search event
                 let searchQuery = $("#landingSearchInput").val();
+
+                // encode the search query
+                searchQuery = encodeURIComponent(searchQuery);
+
                 /*
                     When the user clicks the search button, we want to capture the search query.
                     Put the search query into the session storage so that it can be used by the
                     explorer page.
                  */
                 sessionStorage.setItem("landingSearchQuery", searchQuery);
+
                 // Navigate to the explorer page
                 window.location.href = "/picsureui/openAccess";
             },
