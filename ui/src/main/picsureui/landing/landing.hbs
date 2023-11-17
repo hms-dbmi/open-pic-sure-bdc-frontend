@@ -66,10 +66,13 @@
     .search-container {
         display: flex;
         align-items: center;
+
     }
 
     .search-container button {
         margin-left: 1rem;
+        padding: .625rem 2.5rem;
+        border-radius: .625em;
     }
 
     #landingSearch {
@@ -80,11 +83,13 @@
 <div class="landing-container">
     <div>
         <div class="search-container">
-            <input type="text" placeholder="Search..." style="padding: 10px; width: 100%;" id="landingSearch"/>
+            <input type="text" placeholder="Search..." class="form-control" style="padding: 10px; width: 100%;"
+                   id="landingSearch"/>
             <button class="btn btn-default">Search</button>
         </div>
         <div>
-            <p>NHLBI BioData Catalyst® Powered by PIC-SURE can be used to explore studies, conduct feasibility tests,
+            <p><i>NHLBI BioData Catalyst® Powered by PIC-SURE</i> can be used to explore studies, conduct feasibility
+                tests,
                 create
                 cohorts, and select data at the variable-value level.</p>
         </div>
