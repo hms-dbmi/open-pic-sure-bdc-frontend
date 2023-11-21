@@ -16,6 +16,12 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
             },
             events: {
                 "click #landingSearchButton": "handleLandingSearch",
+                "keypress #landingSearchInput": "handleLandingSearchKeypress",
+            },
+            handleLandingSearchKeypress: function (event) {
+                if (event.keyCode === 13) {
+                    this.handleLandingSearch(event);
+                }
             },
             handleLandingSearch: function (event) {
                 // Log the search event

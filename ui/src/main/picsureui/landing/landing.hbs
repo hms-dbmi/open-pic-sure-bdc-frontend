@@ -38,6 +38,10 @@
         text-decoration: none;
     }
 
+    .landing-anchor p {
+        font-size: 1.6rem;
+    }
+
     /* Grow landing anchor on hover */
     .landing-anchor:hover {
         transform: scale(1.1);
@@ -52,7 +56,7 @@
         flex-direction: row;
         justify-content: space-around;
         padding: 3rem 1rem;
-        width: 80%;
+        width: 70%;
     }
 
     .landing-count {
@@ -83,7 +87,6 @@
     .search-container input {
         padding: 10px;
         width: 100%;
-        background-color: lightgrey;
         border: 1px solid #C2C2C2;
     }
 </style>
@@ -99,6 +102,23 @@
                 tests,
                 create
                 cohorts,<br/> and select data at the variable-value level.</p>
+        </div>
+        <div class="landing-counts">
+            <div class="landing-count">
+                <div id="available-studies"></div>
+                <div id="available-studies-spinner">0</div>
+                <p>Available Studies</p>
+            </div>
+            <div class="landing-count">
+                <div id="open-participants"></div>
+                <div id="open-participants-spinner">0</div>
+                <p>Total Participants</p>
+            </div>
+            <div class="landing-count">
+                <div id="open-variables"></div>
+                <div id="open-variables-spinner">0</div>
+                <p>Total Variables</p>
+            </div>
         </div>
     </div>
     <div class="landing-nav-buttons">
