@@ -14,7 +14,32 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
             initialize: function () {
                 this.template = HBS.compile(landingTemplate);
             },
-            events: {},
+            events: {
+                "click #landingSearchButton": "handleLandingSearch",
+                "keypress #landingSearchInput": "handleLandingSearchKeypress",
+            },
+            handleLandingSearchKeypress: function (event) {
+                if (event.keyCode === 13) {
+                    this.handleLandingSearch(event);
+                }
+            },
+            handleLandingSearch: function (event) {
+                // Log the search event
+                let searchQuery = $("#landingSearchInput").val();
+
+                // encode the search query
+                searchQuery = encodeURIComponent(searchQuery);
+
+                /*
+                    When the user clicks the search button, we want to capture the search query.
+                    Put the search query into the session storage so that it can be used by the
+                    explorer page.
+                 */
+                sessionStorage.setItem("landingSearchQuery", searchQuery);
+
+                // Navigate to the explorer page
+                window.location.href = "/picsureui/openAccess";
+            },
             render: function () {
                 search.execute("\\_studies\\", function (response) {
                         let openStudies = response.suggestions.length;
