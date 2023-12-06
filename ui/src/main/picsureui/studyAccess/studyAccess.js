@@ -34,8 +34,9 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                         const gsc = parseInt(tmpStudy["genetic_sample_size"]).toLocaleString();
                         tmpStudy["genetic_sample_size"] = gsc == '-1' || gsc == 'NaN' ? 'N/A' : gsc;
 
-
-                        tmpStudy['accession'] = tmpStudy["study_identifier"] + "." + tmpStudy["study_version"] + "." + tmpStudy["study_phase"] + "." + tmpStudy["consent_group_code"];
+                        tmpStudy['accession'] = tmpStudy["consent_group_code"] ?
+                                tmpStudy["study_identifier"] + "." + tmpStudy["study_version"] + "." + tmpStudy["study_phase"] + "." + tmpStudy["consent_group_code"] :
+                                ""; // Show empty string if no consent group code (open dataset)
 
                         if (tmpStudy["consent_group_code"] === "c0") {
                             tmpStudy['isGranted'] = false;
