@@ -961,3 +961,8 @@ remove when above bug is fixed */
 .spinner-vert-center {
     top: 25%;
 }
+
+.disabled-icon.hidden-icon {
+    visibility: hidden;
+    pointer-events: none;
+}

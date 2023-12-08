@@ -19,7 +19,6 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                 // process the study data into permission granted or not groups
                 this.records = {
                     permitted: [],
-                    na: []
                 };
 
                 let configurationData = JSON.parse(studyAccessConfiguration);
@@ -34,16 +33,13 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                         const gsc = parseInt(tmpStudy["genetic_sample_size"]).toLocaleString();
                         tmpStudy["genetic_sample_size"] = gsc == '-1' || gsc == 'NaN' ? 'N/A' : gsc;
 
+                        tmpStudy['accession'] = tmpStudy["consent_group_code"] ?
+                                tmpStudy["study_identifier"] + "." + tmpStudy["study_version"] + "." + tmpStudy["study_phase"] + "." + tmpStudy["consent_group_code"] :
+                                ""; // Show empty string if no consent group code (open dataset)
 
-                        tmpStudy['accession'] = tmpStudy["study_identifier"] + "." + tmpStudy["study_version"] + "." + tmpStudy["study_phase"] + "." + tmpStudy["consent_group_code"];
-
-                        if (tmpStudy["consent_group_code"] === "c0") {
-                            tmpStudy['isGranted'] = false;
-                            this.records.na.push(tmpStudy);
-                        } else {
+                        if (tmpStudy["consent_group_code"] !== "c0") {
                             this.records.permitted.push(tmpStudy);
                         }
-
                     }
                 }
 
@@ -55,8 +51,8 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                         return (a["abbreviated_name"].localeCompare(b["abbreviated_name"]));
                     }
                 };
+
                 this.records.permitted.sort(funcSort);
-                this.records.na.sort(funcSort);
             },
             events: {
                 "click .study-lst-btn1": "toggleConsent",
@@ -65,11 +61,9 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
             },
             toggleConsent: function () {
                 if ($("#no-consent-toggle").hasClass("glyphicon-chevron-down")) {
-                    $("#data-access-table-na_wrapper").show();
                     $("#no-consent-toggle").removeClass("glyphicon-chevron-down");
                     $("#no-consent-toggle").addClass("glyphicon-chevron-up");
                 } else {
-                    $("#data-access-table-na_wrapper").hide();
                     $("#no-consent-toggle").removeClass("glyphicon-chevron-up");
                     $("#no-consent-toggle").addClass("glyphicon-chevron-down");
                 }
@@ -134,55 +128,6 @@ define(["jquery", "backbone", "handlebars", "text!studyAccess/studyAccess.hbs", 
                     ]
                 });
 
-                $('#data-access-table-na').DataTable({
-                    data: this.records.na,
-                    "searching": true,
-                    "paging": false,
-                    "ordering": true,
-                    "fixedColumns": false,
-                    "responsive": true,
-                    "tabIndex": -1,
-                    order: [[0, 'asc']],
-                    columns: [
-                        {title: 'Abbreviation', data: 'abbreviated_name'},
-                        {title: 'Name', data: 'full_study_name'},
-                        {title: 'Study Focus', data: 'study_focus'},
-                        {title: 'Study Design', data: 'study_design'},
-                        {title: 'Clinical Variables', data: 'clinical_variable_count'},
-                        {title: 'Participants with Phenotypes', data: 'clinical_sample_size'},
-                        {title: 'Samples Sequenced', data: 'genetic_sample_size'},
-                        {title: 'Additional Infomation', data: 'additional_information'},
-                        {title: 'Consents', data: 'consent_group_name'},
-                        {title: 'dbGaP Accession', data: 'accession'},
-                        {title: 'Link to dbGaP Study Page', data: null},
-                    ],
-                    columnDefs: [
-                        {
-                            targets: 10,
-                            className: 'dt-center',
-                            type: 'string'
-                        },
-                        {
-                            targets: [0, 2, 3, 4, 5, 6, 9],
-                            className: 'dt-center',
-                            type: 'string'
-                        },
-                        {
-                            targets: [1, 7, 8],
-                            className: 'dt-left',
-                            type: 'string'
-                        },
-                        {
-                            render: function (data, type, row, meta) {
-                                return '<span class="btn btn-default disabled">N/A</span>';
-                            },
-                            type: 'string',
-                            targets: 10
-                        }
-                    ]
-                });
-
-                $("#data-access-table-na_wrapper").hide();
             }
         });
 
