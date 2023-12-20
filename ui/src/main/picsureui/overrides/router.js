@@ -45,7 +45,7 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
             let deferred = $.Deferred();
 
             // check if the route is allowed
-            if (!allowedRoutes.includes(name)) {
+            if (!allowedRoutes.includes(callback?.name?.split('/')[1])) {
                 // redirect the user to the landing page
                 callback = this.defaultAction;
             }
