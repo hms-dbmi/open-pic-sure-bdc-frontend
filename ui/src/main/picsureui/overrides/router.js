@@ -7,7 +7,7 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
               outputPanel, queryBuilder, searchHelpTooltipTemplate, output,
               FilterListView, SearchView, ToolSuiteView, queryResultsView,
               ApiPanelView, filterModel, tagFilterModel, landingView, session) {
-        const allowedRoutes = ["dataAccess", "openAccess", "queryBuilder", "not_authorized", "unexpected_error"]
+        const allowedRoutes = ["dataAccess#", "openAccess", "queryBuilder", "not_authorized", "unexpected_error"];
 
         let createUserSession = function (that, callback, args) {
             let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
@@ -44,8 +44,9 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
         let execute = function (callback, args, name) {
             let deferred = $.Deferred();
 
+            let path = BB.history.getFragment();
             // check if the route is allowed
-            if (!allowedRoutes.includes(callback?.name?.split('/')[1])) {
+            if (!allowedRoutes.includes(path?.split('/')[1])) {
                 // redirect the user to the landing page
                 callback = this.defaultAction;
             }
