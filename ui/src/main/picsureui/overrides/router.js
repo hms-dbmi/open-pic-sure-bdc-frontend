@@ -7,7 +7,7 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
               outputPanel, queryBuilder, searchHelpTooltipTemplate, output,
               FilterListView, SearchView, ToolSuiteView, queryResultsView,
               ApiPanelView, filterModel, tagFilterModel, landingView, session) {
-        const allowedRoutes = ["dataAccess#", "openAccess", "queryBuilder", "not_authorized", "unexpected_error"];
+        const allowedRoutes = ["dataAccess", "openAccess", "queryBuilder", "not_authorized", "unexpected_error"];
 
         let createUserSession = function (that, callback, args) {
             let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
