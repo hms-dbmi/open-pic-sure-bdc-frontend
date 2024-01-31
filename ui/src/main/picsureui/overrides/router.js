@@ -7,6 +7,8 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
               outputPanel, queryBuilder, searchHelpTooltipTemplate, output,
               FilterListView, SearchView, ToolSuiteView, queryResultsView,
               ApiPanelView, filterModel, tagFilterModel, landingView, session) {
+        const allowedRoutes = ["dataAccess", "openAccess", "queryBuilder", "not_authorized", "unexpected_error"];
+
         let createUserSession = function (that, callback, args) {
             let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
             if (uuid) {
@@ -41,6 +43,14 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
 
         let execute = function (callback, args, name) {
             let deferred = $.Deferred();
+
+            let path = BB.history.getFragment();
+            // check if the route is allowed
+            if (!allowedRoutes.includes(path?.split('/')[1])) {
+                // redirect the user to the landing page
+                callback = this.defaultAction;
+            }
+
             if (!session.isValid(deferred)) {
                 createUserSession(this, callback, args);
             } else {
@@ -113,16 +123,6 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
             filterListView.render();
         };
 
-        let displayAPI = function () {
-            $(".header-btn.active").removeClass('active');
-            $(".header-btn[data-href='/picsureui/api']").addClass('active');
-            $('#main-content').empty();
-
-            var apiPanelView = new ApiPanelView({});
-            $('#main-content').append(apiPanelView.$el);
-            apiPanelView.render();
-        };
-
         return {
             routes: {
                 /**
@@ -132,9 +132,6 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
                  * Ex:
                  * "picsureui/queryBuilder2" : function() { renderQueryBuilder2(); }
                  */
-                "psamaui/login(/)": undefined,
-                "picsureui/login(/)": undefined,
-                "psamaui/logout(/)": undefined,
                 "picsureui/dataAccess": displayDataAccess,
                 "picsureui/openAccess": function () {
                     displayOpenAccess.call(this);
@@ -142,7 +139,6 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
                 "picsureui/queryBuilder(/)": function () {
                     displayOpenAccess.call(this);
                 },
-                "picsureui/api": displayAPI,
                 "picsureui(/)": displayLandingPage,
             },
             defaultAction: displayLandingPage,
