@@ -1,4 +1,3 @@
-
 ARG BDC_UI_TAG
 FROM hms-dbmi/pic-sure-biodatacatalyst-ui:${BDC_UI_TAG}
 
