@@ -67,7 +67,7 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
                         });
 
                         let deferredVariables = $.ajax({
-                            url: window.location.origin + "/picsure/search/36363664-6231-6134-2D38-6538652D3131",
+                            url: window.location.origin + "/picsure/search/" + settings.dictionaryResourceId,
                             type: 'POST',
                             contentType: 'application/json',
                             data: JSON.stringify({
