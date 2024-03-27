@@ -16,6 +16,10 @@ define(["backbone", "common/session"], function (Backbone, session) {
     return Backbone.View.extend({
         initialize: function () {
             $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+                if (options.url.startsWith("/psamaui")) {
+                    return;
+                }
+
                 // Check if the token is expired
                 if (expired() || expireSoon()) {
                     // We will re-authenticate the user
@@ -28,7 +32,7 @@ define(["backbone", "common/session"], function (Backbone, session) {
                             data: JSON.stringify({uuid: uuid}),
                             success: function (data) {
                                 // Update the session
-                                session.init(data);
+                                session.sessionInit(data);
                             },
                             error: function (data) {
                                 // handle error
