@@ -20,14 +20,9 @@ define(["picSure/tokenFunctions"],
                 sessionStorage.setItem("session", JSON.stringify(currentSession));
             },
             handleNotAuthorizedResponse: function () {
-                try {
-                    // A token should never be expired and the user should never not be authorized.
-                    // If the token has expired, there is like an issue with PSAMA.
-                    window.location = '/psamaui/not_authorized/';
-                } catch (e) {
-                    console.log("Error determining token expiry");
-                    history.pushState({}, "", "/psamaui/not_authorized");
-                }
+                // if the session has expired we will clear the session and reload the page
+                sessionStorage.clear();
+                window.location.reload();
             }
         };
     });
