@@ -1,54 +1,94 @@
 define(["backbone", "common/session"], function (Backbone, session) {
-    // Create a middleware that first checks if the session is expired or will expire soon (2 minutes)
-    // If the session is going to expire soon or the session is expired, refresh the user's session by re-authenticating them
-    let expired = function (marginOfError = 0) {
-        if (sessionStorage.session) {
-            return new Date().getTime() / 1000 > JSON.parse(atob(JSON.parse(sessionStorage.session).token.split('.')[1])).exp - marginOfError;
+    let tokenState = {
+        isRefreshing: false,
+        subscribers: [],
+        queueRequest: function (ajaxOptions) {
+            this.subscribers.push(ajaxOptions);
+        },
+        processQueue: function () {
+            this.subscribers.forEach((ajaxOptions) => {
+                $.ajax(ajaxOptions);
+            });
+            this.subscribers = [];
         }
-        //no session -> no token --> session has expired or does not exist.
-        return true;
     };
 
-    let expireSoon = function () {
-        return expired(120);
-    };
+    function expired(marginOfError = 0) {
+        if (sessionStorage.session) {
+            let sessionData = JSON.parse(sessionStorage.session);
+            let decodedToken = JSON.parse(atob(sessionData.token.split('.')[1]));
+            return new Date().getTime() / 1000 > decodedToken.exp - marginOfError;
+        }
+        return true;
+    }
+
+    // nearly expired. 5 minutes before expiration.
+    // We do this to ensure we don't accidentally make a request with an expired token
+    // and have to refresh it in the middle of the request.
+    // This is a bit of a hack, but it should work for now.
+    function nearlyExpired() {
+        return expired(300);
+    }
+
+    function refreshToken() {
+        if (!tokenState.isRefreshing) {
+            tokenState.isRefreshing = true;
+            return new Promise((resolve, reject) => {
+                let uuid = JSON.parse(localStorage.getItem('OPEN_ACCESS_UUID'));
+                if (uuid) {
+                    $.ajax({
+                        url: '/psama/open/authentication',
+                        type: 'POST',
+                        data: JSON.stringify({ UUID: uuid }),
+                        contentType: 'application/json',
+                        success: function (data) {
+                            session.sessionInit(data);
+                            tokenState.isRefreshing = false;
+                            tokenState.processQueue();
+                            resolve();
+                        },
+                        error: function (error) {
+                            console.error("Failed to refresh token", error);
+                            tokenState.isRefreshing = false;
+                            reject(error);
+                        }
+                    });
+                } else {
+                    tokenState.isRefreshing = false;
+                    reject("UUID not found");
+                }
+            });
+        } else {
+            return new Promise((resolve) => {
+                tokenState.subscribers.push({
+                    success: resolve,
+                    error: resolve // Resolve the queue even if refresh fails to prevent deadlock
+                });
+            });
+        }
+    }
 
     return Backbone.View.extend({
         initialize: function () {
-            $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-                if (options.url.startsWith("/psamaui")) {
+            $.ajaxPrefilter((options, originalOptions, jqXHR) => {
+                if (options.crossDomain || options.url.includes("psamaui") || options.url.includes("psama")) {
                     return;
                 }
 
-                // Check if the token is expired
-                if (expired() || expireSoon()) {
-                    // We will re-authenticate the user
-                    let uuid = JSON.parse(localStorage.getItem('OPEN_ACCESS_UUID'));
-                    if (uuid) {
-                        $.ajax({
-                            url: '/psamaui/reauthenticate',
-                            type: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({uuid: uuid}),
-                            success: function (data) {
-                                // Update the session
-                                session.sessionInit(data);
-                            },
-                            error: function (data) {
-                                // handle error
-                                console.log(data);
-                            }
-                        });
-                    }
+                if (expired() || nearlyExpired()) {
+                    jqXHR.abort();
+                    refreshToken().then(() => {
+                        $.ajax(originalOptions);
+                    });
+                } else {
+                    originalOptions.beforeSend = (jqXHR) => {
+                        jqXHR.setRequestHeader("Authorization", "Bearer " + JSON.parse(sessionStorage.session).token);
+                    };
                 }
-
-                // set the authorization header for the request.
-                // This is because the session was updated, but the request was made before the session was updated
-                jqXHR.setRequestHeader("Authorization", "Bearer " + JSON.parse(sessionStorage.session).token);
             });
         },
         render: function () {
             return this;
         }
     });
-})
+});
