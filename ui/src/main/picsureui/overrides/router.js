@@ -16,7 +16,7 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
             }
 
             $.ajax({
-                url: '/psama/open/authentication',
+                url: '/psama/authentication/open',
                 type: 'POST',
                 data: JSON.stringify({
                     UUID: uuid
