@@ -1,8 +1,7 @@
 define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure/search", "picSure/settings",
-        "picSure/queryBuilder", "common/spinner", "common/transportErrors", "text!studyAccess/studies-data.json",
-        "search-interface/filter-model"],
+        "picSure/queryBuilder", "common/spinner", "common/transportErrors", "studyAccess/study-utility"],
     function ($, BB, HBS, landingTemplate, search, settings, queryBuilder, spinner,
-              transportErrors) {
+              transportErrors, studyUtility) {
         const STUDY_CONSENTS = "\\_studies_consents\\";
         const landing = {
             resources: {
@@ -41,63 +40,56 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
                 window.location.href = "/picsureui/openAccess";
             },
             render: function () {
-                search.execute("\\_studies\\", function (response) {
-                        let openStudies = response.suggestions.length;
+                let parsedCountString;
+                let variables;
+                let query = queryBuilder.generateQueryNew({}, {}, null, landing.resources.open);
+                query.query.expectedResultType = "CROSS_COUNT";
+                query.query.crossCountFields = [STUDY_CONSENTS];
 
-                        let query = queryBuilder.generateQueryNew({}, {}, null, landing.resources.open);
-                        query.query.expectedResultType = "CROSS_COUNT";
-                        query.query.crossCountFields = [STUDY_CONSENTS];
-                        let deferredParticipants = $.ajax({
-                            url: window.location.origin + "/picsure/query/sync",
-                            type: 'POST',
-                            headers: {"Authorization": "Bearer " + JSON.parse(sessionStorage.getItem("session")).token},
-                            contentType: 'application/json',
-                            data: JSON.stringify(query),
-                            success: (function (response) {
-                                const parsedCountString = response[STUDY_CONSENTS] ? parseInt(response[STUDY_CONSENTS]).toLocaleString() : 0;
-                                $("#open-participants").html(parsedCountString);
-                                $('#available-studies').html(openStudies);
-                            }).bind(this),
+                let deferredParticipants = $.Deferred();
+                let deferredVariables = $.Deferred();
 
-                            statusCode: {
-                                401: function () {
-                                }
-                            },
-                            error: transportErrors.handleAll
-                        });
+                spinner.medium(deferredVariables, "#open-variables-spinner", "spinner2");
+                spinner.medium(deferredParticipants, "#open-participants-spinner", "spinner2");
+                spinner.medium(deferredParticipants, "#available-studies-spinner", "spinner2");
 
-                        let deferredVariables = $.ajax({
-                            url: window.location.origin + "/picsure/search/" + settings.dictionaryResourceId,
-                            type: 'POST',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
-                                "query": {
-                                    "searchTerm": "",
-                                    "includedTags": [],
-                                    "excludedTags": [],
-                                    "returnTags": false,
-                                    "limit": 1
-                                }
-                            }),
-                            success: function (response) {
-                                console.log(response);
-                                $("#open-variables").html(parseInt(response.results.numResults).toLocaleString());
-                            },
-                            error: function (response) {
-                                console.log(response);
-                            }
-                        });
+                $.ajax({
+                    url: window.location.origin + "/picsure/query/sync",
+                    type: 'POST',
+                    headers: {"Authorization": "Bearer " + JSON.parse(sessionStorage.getItem("session")).token},
+                    contentType: 'application/json',
+                    data: JSON.stringify(query)
+                }).then((response) => {
+                    parsedCountString = response[STUDY_CONSENTS] ? parseInt(response[STUDY_CONSENTS]).toLocaleString() : 0;
+                    deferredParticipants.resolve();
+                    $("#open-participants").html(parsedCountString);
+                    $('#available-studies').html(studyUtility.getAvailableStudiesCount());
+                }).fail(transportErrors.handleAll);
 
-                        spinner.medium(deferredVariables, "#open-variables-spinner", "spinner2");
-                        spinner.medium(deferredParticipants, "#open-participants-spinner", "spinner2");
-                        spinner.medium(deferredParticipants, "#available-studies-spinner", "spinner2");
-                    },
-                    landing.resources.open);
+                $.ajax({
+                    url: window.location.origin + "/picsure/search/" + settings.dictionaryResourceId,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        "query": {
+                            "searchTerm": "",
+                            "includedTags": [],
+                            "excludedTags": [],
+                            "returnTags": false,
+                            "limit": 1
+                        }
+                    })
+                }).then((response) => {
+                    variables = parseInt(response.results.numResults).toLocaleString();
+                    deferredVariables.resolve();
+                    $("#open-variables").html(variables ?? 0);
+                }).fail((response) => {
+                    console.log(response);
+                });
 
                 this.$el.html(this.template());
                 return this;
             }
         });
-    })
-;
-
+    }
+);
