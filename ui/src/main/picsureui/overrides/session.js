@@ -1,13 +1,5 @@
 define(["picSure/tokenFunctions"],
     function (tokenFunctions) {
-        let expired = function () {
-            if (sessionStorage.session) {
-                return new Date().getTime() / 1000 > JSON.parse(atob(JSON.parse(sessionStorage.session).token.split('.')[1])).exp;
-            }
-            //no session -> no token --> session has expired or does not exist.
-            return true;
-        };
-
         return {
             handleQueryTemplateAndMeResponseSuccess: function (queryTemplateResponse, meResponse) {
                 let currentSession = JSON.parse(sessionStorage.getItem("session"));

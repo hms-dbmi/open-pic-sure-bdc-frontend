@@ -9,38 +9,6 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
               ApiPanelView, filterModel, tagFilterModel, landingView, session) {
         const allowedRoutes = ["dataAccess", "openAccess", "queryBuilder", "not_authorized", "unexpected_error"];
 
-        let createUserSession = function (that, callback, args) {
-            let uuid = localStorage.getItem('OPEN_ACCESS_UUID');
-            if (uuid) {
-                uuid = JSON.parse(uuid);
-            }
-
-            $.ajax({
-                url: '/psama/authentication/open',
-                type: 'POST',
-                data: JSON.stringify({
-                    UUID: uuid
-                }),
-                contentType: 'application/json',
-                success: function (data) {
-                    if (data.uuid) {
-                        // we need to set the UUID cookie here, because the backend will not do it for us.
-                        localStorage.setItem('OPEN_ACCESS_UUID', JSON.stringify(data.uuid));
-                    }
-
-                    session.sessionInit(data);
-                    that.renderHeaderAndFooter();
-                    if (callback) {
-                        callback.apply(that, args);
-                    }
-                },
-                error: function (data) {
-                    // handle error
-                    console.log(data);
-                }
-            });
-        };
-
         let execute = function (callback, args, name) {
             let deferred = $.Deferred();
 
@@ -51,13 +19,10 @@ define(["backbone", "underscore", "handlebars", "studyAccess/studyAccess", "picS
                 callback = this.defaultAction;
             }
 
-            if (!session.isValid(deferred)) {
-                createUserSession(this, callback, args);
-            } else {
-                this.renderHeaderAndFooter();
-                if (callback) {
-                    callback.apply(this, args);
-                }
+            session.updatePrivileges(deferred);
+            this.renderHeaderAndFooter();
+            if (callback) {
+                callback.apply(this, args);
             }
         };
 
