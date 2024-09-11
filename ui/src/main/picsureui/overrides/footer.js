@@ -4,16 +4,14 @@ define(["handlebars",
         "common/session",
         "common/pic-sure-dialog-view",
         "middleware/middleware",
-        "common/redirect-modal",
-        "middleware/reauthenticate",
+        "common/redirect-modal"
     ],
-    function (HBS, template, modal, session, dialog, Middleware, redirectModal, Reauthenticate) {
+    function (HBS, template, modal, session, dialog, Middleware, redirectModal) {
         return {
             /*
              * The render function for the footer can be overridden here.
              */
             render: function () {
-                new Reauthenticate();
                 new Middleware();
 
                 let title = window.location.pathname.split("/");
