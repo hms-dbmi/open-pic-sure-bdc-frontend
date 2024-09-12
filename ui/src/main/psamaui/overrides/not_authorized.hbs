@@ -3,5 +3,9 @@
     <p>Please try refreshing the page or using Open PIC-SURE again later. If the issue still persists, please contact the support team using the
         <a href="https://hms-dbmi.atlassian.net/servicedesk/customer/portal/14/group/27" target="_blank">Help Desk</a></p>
 </div>
-<script>sessionStorage.clear();
-localStorage.clear();</script>
+<script>
+sessionStorage.clear();
+localStorage.clear();
+// redirect the user to the landing page
+window.location.href = "/";
+</script>
