@@ -56,7 +56,7 @@ define(["jquery", "backbone", "handlebars", "text!landing/landing.hbs", "picSure
                 $.ajax({
                     url: window.location.origin + "/picsure/query/sync",
                     type: 'POST',
-                    headers: {"Authorization": "Bearer " + JSON.parse(sessionStorage.getItem("session")).token},
+                    headers: {"Authorization": "Bearer " + JSON.parse(sessionStorage.getItem("session"))?.token},
                     contentType: 'application/json',
                     data: JSON.stringify(query)
                 }).then((response) => {
